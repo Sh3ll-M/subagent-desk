@@ -2,7 +2,7 @@
 
 A [Claude Code](https://claude.com/claude-code) mod that gives you a live side panel showing every subagent Claude spins up — what each one's doing, how long it's taken, and how many tokens it's used.
 
-<!-- screenshot: docs/screenshot.png -->
+![Subagent Desk panel showing three running subagents, each with an animated Clawd crab, a name, step progress, tokens, and elapsed time](docs/screenshot.png)
 
 ## Why
 
