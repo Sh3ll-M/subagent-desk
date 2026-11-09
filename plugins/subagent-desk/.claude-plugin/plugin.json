@@ -1,0 +1,7 @@
+{
+  "name": "subagent-desk",
+  "version": "0.1.0",
+  "description": "Subagent Desk: a side pane with one live, animated Clawd card per subagent, showing its step, tokens and time",
+  "license": "MIT",
+  "types": "./types/index.d.ts"
+}

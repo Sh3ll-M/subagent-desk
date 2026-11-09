@@ -1,0 +1,13 @@
+﻿{
+  "name": "claude-mods",
+  "owner": { "name": "Matthew" },
+  "description": "Matthew's own Claude Code mods",
+  "plugins": [
+    {
+      "name": "subagent-desk",
+      "source": "./plugins/subagent-desk",
+      "description": "A side pane with one live, animated Clawd card per subagent, showing its step, tokens and time",
+      "version": "0.1.0"
+    }
+  ]
+}
