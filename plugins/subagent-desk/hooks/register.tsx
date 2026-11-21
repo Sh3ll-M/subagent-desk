@@ -89,15 +89,20 @@ async function change($: EngineInterface, fn: (d: Desk) => Desk) {
   return next
 }
 
-async function openPane($: EngineInterface, asked: boolean) {
-  const r = await $.ui.open({ id: PANE, title: TITLE, columns: PANE_COLS })
-  if (!asked && !r.isPlaced) {
+/** Opens the pane; true when a surface draws it now. */
+async function openPane($: EngineInterface, asked: boolean): Promise<boolean> {
+  const placed = await $.ui
+    .open({ id: PANE, title: TITLE, columns: PANE_COLS })
+    .then(r => r.isPlaced)
+    .catch(() => false)
+  if (!asked && !placed) {
     try {
       $.ui.toast('Subagents started: type /desk to watch them')
     } catch {
       // A toast is only a hint.
     }
   }
+  return placed
 }
 
 // The agent list catches ends the events missed.
@@ -185,8 +190,12 @@ export const register: Register = on => {
   })
 
   on('command.run', { command: 'desk' }, async $ => {
-    await openPane($, true)
-    return { text: 'Subagent Desk opened.' }
+    const placed = await openPane($, true)
+    return {
+      text: placed
+        ? 'Subagent Desk opened.'
+        : "Subagent Desk couldn't open here: this window can't show side panes. Use the Claude desktop app or an interactive terminal session.",
+    }
   })
 
   on('agent.spawn', async ($, e, next) => {

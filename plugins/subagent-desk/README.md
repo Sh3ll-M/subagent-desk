@@ -8,6 +8,14 @@ A Claude Code mod that shows a side pane with one live card per subagent Claude 
 - The mod only watches. It never changes a tool call or adds anything to Claude's prompt.
 - Built for Windows: no shell commands, no hand-built file paths.
 
+## Install
+
+```
+/plugin install subagent-desk --marketplace Sh3ll-M/subagent-desk
+```
+
+In the Claude desktop app: **+** → **Plugins** → **Add marketplace** `Sh3ll-M/subagent-desk` → **Add plugin**.
+
 ## Credits
 
 The Clawd animations are from [clawd-tank](https://github.com/marciogranzotto/clawd-tank) by Marcio Granzotto Rodrigues, MIT licence (`assets/clawd/LICENSE`). To rebuild `hooks/clawd.ts` after changing an SVG: `python -I tools/build-clawd.py`.

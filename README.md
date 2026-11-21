@@ -16,12 +16,21 @@ When Claude starts subagents mid-chat, they work out of sight. Subagent Desk put
 
 ## Install
 
+**In a terminal** (run `claude` first), type at the prompt:
+
 ```
-/plugin marketplace add Sh3ll-M/subagent-desk
-/plugin install subagent-desk@claude-mods
+/plugin install subagent-desk --marketplace Sh3ll-M/subagent-desk
 ```
 
-Then run `/desk` to open the panel.
+Answer `y` to add the marketplace, then press Enter to install for your user. Or, without opening Claude Code:
+
+```
+claude plugin install subagent-desk --marketplace Sh3ll-M/subagent-desk
+```
+
+**In the Claude desktop app**, `/plugin` doesn't work in the Code tab. Instead: click **+** next to the prompt box, then **Plugins** → **Add marketplace**, enter `Sh3ll-M/subagent-desk`, then **Add plugin** and choose Subagent Desk.
+
+Once installed, the panel opens by itself when Claude starts subagents, or run `/desk` to open it. It shows in the desktop app and in interactive terminal sessions, not under `claude -p`. If nothing happens, check `claude --version` and update Claude Code.
 
 ## Credits
 
