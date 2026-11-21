@@ -4,7 +4,7 @@ type On = Parameters<NonNullable<Parameters<typeof test>[2]>>[1]
 type Agent = { id: string; description: string; type: string; status: string }
 
 /** Mocks every $ call the mod makes. */
-function rig(on: On, opts: { limits?: { kind: string; percentUsed: number }[]; listed?: Agent[] } = {}) {
+function rig(on: On, opts: { limits?: { kind: string; percentUsed: number }[]; listed?: Agent[]; open?: 'placed' | 'unplaced' | 'throws' } = {}) {
   const ids = ['agent-a1', 'agent-a2', 'agent-a3']
   const agents: Agent[] = [...(opts.listed ?? [])]
   const opened: string[] = []
@@ -25,7 +25,8 @@ function rig(on: On, opts: { limits?: { kind: string; percentUsed: number }[]; l
   on('ui.open', async ($, e) => {
     opened.push((e as { id: string }).id)
     openArgs.push(e as { columns?: number })
-    return { value: { isPlaced: true } } as never
+    if (opts.open === 'throws') throw new Error('no-surface')
+    return { value: { isPlaced: opts.open !== 'unplaced' } } as never
   })
   on('ui.toast', async ($, e) => {
     toasts.push((e as { text: string }).text)
@@ -220,4 +221,19 @@ test('/desk opens the pane', { timeoutMs: 30000 }, async ($, on) => {
   const said = await $.command.run({ command: 'desk', args: '' } as never)
   expect(JSON.stringify(said)).toContain('Subagent Desk opened')
   expect(r.opened).toContain('subagent-desk')
+})
+
+test('/desk says so when no surface can show the pane', { timeoutMs: 30000 }, async ($, on) => {
+  rig(on, { open: 'unplaced' })
+  await $.session.start({ source: 'startup', cwd: '/x', surface: 'desktop', isInteractive: true } as never)
+  const said = JSON.stringify(await $.command.run({ command: 'desk', args: '' } as never))
+  expect(said).not.toContain('Subagent Desk opened')
+  expect(said).toContain("couldn't open here")
+})
+
+test('/desk says so when opening the pane fails', { timeoutMs: 30000 }, async ($, on) => {
+  rig(on, { open: 'throws' })
+  await $.session.start({ source: 'startup', cwd: '/x', surface: 'desktop', isInteractive: true } as never)
+  const said = JSON.stringify(await $.command.run({ command: 'desk', args: '' } as never))
+  expect(said).toContain("couldn't open here")
 })
